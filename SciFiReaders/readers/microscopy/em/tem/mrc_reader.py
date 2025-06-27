@@ -69,7 +69,13 @@ class MRCReader(sidpy.Reader):
         sizes = np.array(sizes).flatten()
         y_shape = int(np.abs(sizes[0] - sizes[1]))
         x_shape = int(np.abs(sizes[2] - sizes[3]))
-        reshape_target = (x_shape, y_shape, mrc_data.shape[-2], mrc_data.shape[-1])
+
+        if handedness=='right':
+            reshape_target = (x_shape, y_shape, mrc_data.shape[-2], mrc_data.shape[-1])
+        elif handedness=='left':
+            reshape_target = (y_shape, x_shape, mrc_data.shape[-2], mrc_data.shape[-1])
+        else:
+            print('Handedness must = "right" or "left"')
 
         try:
             self.data = np.reshape(mrc_data, reshape_target)
